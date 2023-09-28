@@ -34,14 +34,14 @@ jobs:
       - name: Run Tests
         run: mvn -B test
 
-name1: SonarCloud
-on1:
+name: SonarCloud
+on:
   push:
     branches:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
-jobs1:
+jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
