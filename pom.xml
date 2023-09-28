@@ -15,6 +15,9 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
+		<sonar.organization>lauranorenab</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.projectKey>lauranorenab_lab2_lauranorena</sonar.projectKey>
 	</properties>
 	<dependencies>
 		<dependency>
