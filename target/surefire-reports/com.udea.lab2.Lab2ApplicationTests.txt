@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.udea.lab2.Lab2ApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.776 s - in com.udea.lab2.Lab2ApplicationTests
