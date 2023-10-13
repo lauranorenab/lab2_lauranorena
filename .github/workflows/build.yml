@@ -87,13 +87,13 @@ jobs:
 
       - name: Copy JAR to EC2
         run: |
-          scp -i ${{ secrets.EC2_SSH_KEY }} /target/lab2-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/ec2-user/lab2-0.0.1-SNAPSHOT.jar
+          scp -i ${{ secrets.EC2_SSH_KEY }} '/target/lab2-0.0.1-SNAPSHOT.jar' ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/ec2-user/lab2-0.0.1-SNAPSHOT.jar
         
 
       - name: SSH into EC2 and restart app
         run: |
-          ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'sudo systemctl stop your-app.service'
-          ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'sudo mv /path/on/ec2/your-app.jar /path/on/ec2/your-app.jar'
-          ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'sudo systemctl start your-app.service'
+          ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'sudo systemctl stop lab_2.service'
+          ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'sudo mv /home/ec2-user/lab2-0.0.1-SNAPSHOT.jar /home/ec2-user/lab2-0.0.1-SNAPSHOT.jar '
+          ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'sudo systemctl start lab_2.service'
         env:
           lab_2.service: Nombre del servicio de tu aplicación en EC2
