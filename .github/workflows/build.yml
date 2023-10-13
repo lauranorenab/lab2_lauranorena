@@ -123,6 +123,10 @@ jobs:
         with:
           name: artifact # The same name you used in the build step
 
+      - name: Register EC2 Host Key
+        run: |
+          ssh-keyscan -H -t rsa ${{ secrets.EC2_HOST }} >> $HOME/.ssh/known_hosts
+
       - name: Copy JAR to EC2
         run: |
           scp -i ./key/clavelab2server.pem ${{ runner.workspace }}/artifact/target/lab2-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/ec2-user/lab2-0.0.1-SNAPSHOT.jar
