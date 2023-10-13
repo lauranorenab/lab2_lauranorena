@@ -133,7 +133,7 @@ jobs:
           name: artifact # The same name you used in the build step
 
       - name: Copy JAR to EC2
-        uses: webfactory/scp-action@v1
+        uses: actions/upload-artifact@v3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
