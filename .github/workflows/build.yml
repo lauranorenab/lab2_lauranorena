@@ -86,7 +86,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Copy JAR to EC2
-        uses: appleboy/scp-action@v1
+        uses: appleboy/rsync-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
