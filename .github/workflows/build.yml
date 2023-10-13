@@ -125,7 +125,7 @@ jobs:
 
       - name: Copy JAR to EC2
         run: |
-          scp -i ${{ secrets.EC2_SSH_KEY }} ${{ runner.workspace }}/artifact/target/lab2-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/ec2-user/lab2-0.0.1-SNAPSHOT.jar
+          scp -i ${{ secrets.EC2_SSH_KEY }} ${{ runner.workspace }} /artifact/target/lab2-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/ec2-user/lab2-0.0.1-SNAPSHOT.jar
 
 
       - name: SSH into EC2 and restart app
