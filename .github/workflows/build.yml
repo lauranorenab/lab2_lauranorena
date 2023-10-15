@@ -118,6 +118,9 @@ jobs:
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+      - name: Give artifact permissions
+        run: |
+            chmod 400 ${{ runner.artifactCache.artifact.path }}
 
       - name: Upload private key
         #This uploads artifacts from your workflow allowing you to share data between jobs and store data once a workflow is complete.
@@ -128,15 +131,15 @@ jobs:
           #From this path
           path: /serverCI_CD.pem
 
+
+
       #Copiar JAR a la instancia de EC2
       - name: Copy JAR to EC2
         run: |
-          chmod 400 ${{ runner.artifactCache.artifact.path }}
           scp -i ${{ runner.artifactCache.artifact.path }} /target/lab2-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
       #Despliegue EC2
       - name: SSH into EC2
         run: |
-          ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'cd /home/ec2-user/'
           ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'java -jar lab2-0.0.1-SNAPSHOT.jar'
         
 
