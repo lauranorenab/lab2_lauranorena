@@ -109,10 +109,9 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-      - name: Verificar la existencia del archivo JAR
-        run: |
-          cd target
-          ls -al
+      - name: Renombrar archivo .jar
+        run: mv /home/runner/work/lab2_lauranorena/_actions/artifact/artifact/target/lab2-0.0.1-SNAPSHOT.jar.original /home/runner/work/lab2_lauranorena/_actions/artifact/artifact/target/lab2-0.0.1-SNAPSHOT.jar
+        
         
 
       #Copiar JAR a la instancia de EC2
