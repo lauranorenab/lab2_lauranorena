@@ -110,7 +110,7 @@ jobs:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
       - name: Renombrar archivo .jar
-        run: mv /target/lab2-0.0.1-SNAPSHOT.jar.original /target/lab2-0.0.1-SNAPSHOT.jar
+        run: pwd
 
         
 
