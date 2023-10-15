@@ -129,7 +129,6 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: "./target/lab2-0.0.1-SNAPSHOT.jar"
-
       #Despliegue EC2
       - name: SSH into EC2 and restart app
         run: |
