@@ -111,6 +111,7 @@ jobs:
 
       - name: Verificar la existencia del archivo JAR
         run: |
+          cd target
           ls -al
         
 
