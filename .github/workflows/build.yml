@@ -135,9 +135,6 @@ jobs:
           #From this path
           path: target/lab2-0.0.1-SNAPSHOT.jar
 
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       #Configura SSH agent
       - name: Setup SSH agent
         uses: webfactory/ssh-agent@v0.7.0
