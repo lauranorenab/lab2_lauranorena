@@ -102,7 +102,7 @@ jobs:
 
   deploy:
     #Depends on sonar's job
-    #needs: build
+    needs: build
     name: Deploy to EC2
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
@@ -161,11 +161,6 @@ jobs:
           sleep 30 
           ssh -i ssh_key.pem ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'sudo shutdown -h now' 
 
-      #Terminar despliegue
-      - name: Kill process
-        run: |
-            timeout 60s killall -9 java
-        shell: bash
           
         
 
