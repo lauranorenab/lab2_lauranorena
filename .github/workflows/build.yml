@@ -102,39 +102,28 @@ jobs:
 
   #Job deploy para el despliegue automático del jar en instancia EC2
   deploy:
-    name: Deploy to EC2
-    needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Set up SSH
+        uses: actions/setup-ssh@v2
 
-      - uses: actions/checkout@v3
-
-      #Configura SSH agent
-      - name: Setup SSH agent
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
-
-      #Descarga el archivo .jar
-      - name: Download JAR artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: artifact # Mismo nombre empleado en el job build
-
-      #Copiar JAR a la instancia de EC2
       - name: Copy JAR to EC2
-        uses: actions/upload-artifact@v3
+        uses: actions/ssh@v2
         with:
-          path: "./target/lab2-0.0.1-SNAPSHOT.jar"
-      #Despliegue EC2
-      - name: SSH into EC2 and restart app
-        run: |
-          ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'sudo systemctl stop lab_2.service'
-          ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'sudo mv /home/ec2-user/lab2-0.0.1-SNAPSHOT.jar /home/ec2-user/lab2-0.0.1-SNAPSHOT.jar'
-          ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'sudo systemctl start lab_2.service'
-        env:
-          lab_2.service: Nombre del servicio de tu aplicación en EC2
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.EC2_HOST }}
+          user: ${{ secrets.EC2_USERNAME }}
+          script: |
+            scp -i ${{ secrets.SSH_PRIVATE_KEY }} "/target/lab2-0.0.1-SNAPSHOT.jar" ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
+
+      - name: Deploy JAR
+        uses: actions/ssh@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.EC2_HOST }}
+          user: ${{ secrets.EC2_USERNAME }}
+          script: |
+            cd /home/ec2-user/
+            java -jar lab2-0.0.1-SNAPSHOT.jar
 
