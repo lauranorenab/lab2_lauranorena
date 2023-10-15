@@ -114,7 +114,7 @@ jobs:
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > ssh_key.pem
           echo -e "Host *\n  StrictHostKeyChecking no" > ssh_config
-          scp -F ssh_config -i ssh_key.pem "/home/runner/work/lab2_lauranorena/target/lab2-0.0.1-SNAPSHOT.jar" ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
+          scp -F ssh_config -i ssh_key.pem ${{ github.workspace }}/target/lab2-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
 
       #Despliegue EC2
       - name: SSH into EC2
