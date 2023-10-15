@@ -139,7 +139,7 @@ jobs:
 
       - name: Give artifact permissions
         run: |
-          chmod 400 ${{ runner.artifactCache.artifact2 }}
+          chmod 400 artifact2
 
       #Copiar JAR a la instancia de EC2
       - name: Copy JAR to EC2
