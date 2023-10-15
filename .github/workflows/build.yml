@@ -111,9 +111,76 @@ jobs:
 
       - name: Renombrar archivo .original a .jar
         run: |
+          mv /home/runner/work/lab2_lauranorena/lab2_lauranorena/target/lab2-0.0.1-SNAPSHOT.jar /home/runner/work/lab2_lauranorena/lab2_lauranorena/target/lab2-0.0.1-SNAPSHOT.jar.original
+        shell: bash
+
+
+
+
+      #Copiar JAR a la instancia de EC2
+      - name: Copy JAR to EC2
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > ssh_key.pem
+          echo -e "Host *\n  StrictHostKeyChecking no" > ssh_config
+          scp -F ssh_config -i ssh_key.pem /home/runner/work/lab2_lauranorena/lab2_lauranorena/target/lab2-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
+
+      #Despliegue EC2
+      - name: SSH into EC2
+        run: |
+          
+          chmod 600 ssh_key.pem
+          ssh -i ssh_key.pem ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'java -jar lab2-0.0.1-SNAPSHOT.jar'
+          
+        
+  deploy:
+    #Depends on sonar's job
+    #needs: build
+    name: Deploy to EC2
+    #Run on Ubuntu using the latest version
+    runs-on: ubuntu-latest
+    steps:
+      #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      - uses: actions/checkout@v1
+      #Set up JDK 11
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      #Set up Maven cache
+      - name: Cache Maven packages
+        #This action allows caching dependencies and build outputs to improve workflow execution time.
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      #Build the application using Maven
+      - name: Build with Maven
+        run: mvn -B package -DskipTests --file pom.xml
+      #Build the application using Maven
+      - name: Upload JAR
+        #This uploads artifacts from your workflow allowing you to share data between jobs and store data once a workflow is complete.
+        uses: actions/upload-artifact@v2
+        with:
+          #Set artifact name
+          name: artifact
+          #From this path
+          path: target/lab2-0.0.1-SNAPSHOT.jar
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      #Configura SSH agent
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Renombrar archivo .original a .jar
+        run: |
           mv /home/runner/work/lab2_lauranorena/lab2_lauranorena/target/lab2-0.0.1-SNAPSHOT.jar.original /home/runner/work/lab2_lauranorena/lab2_lauranorena/target/lab2-0.0.1-SNAPSHOT.jar
         shell: bash
-      
+
 
 
 
