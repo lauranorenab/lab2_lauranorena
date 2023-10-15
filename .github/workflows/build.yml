@@ -109,13 +109,13 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-      - name: Renombrar archivo .jar
+      - name: Renombrar archivo .original a .jar
         run: |
-          pwd
-          cd target 
-          ls
+          mv /home/runner/work/lab2_lauranorena/lab2_lauranorena/target/lab2-0.0.1-SNAPSHOT.jar.original /home/runner/work/lab2_lauranorena/lab2_lauranorena/target/lab2-0.0.1-SNAPSHOT.jar
+        shell: bash
+      
 
-        
+
 
       #Copiar JAR a la instancia de EC2
       - name: Copy JAR to EC2
