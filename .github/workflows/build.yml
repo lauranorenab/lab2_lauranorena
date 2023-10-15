@@ -129,9 +129,9 @@ jobs:
           #From this path
           path: /serverCI_CD.pem
 
-      - name: Give artifact permissions
-        run: |
-          chmod 400 ${{ runner.artifactCache.artifact.path }}
+      #- name: Give artifact permissions
+       # run: |
+        #  chmod 400 ${{ runner.artifactCache.artifact.path }}
 
       #Copiar JAR a la instancia de EC2
       - name: Copy JAR to EC2
