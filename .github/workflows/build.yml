@@ -110,8 +110,8 @@ jobs:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
       - name: Renombrar archivo .jar
-        run: mv /home/runner/work/lab2_lauranorena/_actions/artifact/artifact/target/lab2-0.0.1-SNAPSHOT.jar.original /home/runner/work/lab2_lauranorena/_actions/artifact/artifact/target/lab2-0.0.1-SNAPSHOT.jar
-        
+        run: mv /target/lab2-0.0.1-SNAPSHOT.jar.original /target/lab2-0.0.1-SNAPSHOT.jar
+
         
 
       #Copiar JAR a la instancia de EC2
@@ -119,7 +119,7 @@ jobs:
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > ssh_key.pem
           echo -e "Host *\n  StrictHostKeyChecking no" > ssh_config
-          scp -F ssh_config -i ssh_key.pem ${{ runner.workspace }}/_actions/artifact/artifact/target/lab2-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
+          scp -F ssh_config -i ssh_key.pem /target/lab2-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
 
       #Despliegue EC2
       - name: SSH into EC2
