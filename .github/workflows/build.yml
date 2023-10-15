@@ -119,10 +119,11 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
+
       #Copiar JAR a la instancia de EC2
       - name: Copy JAR to EC2
         run: |
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} /target/lab2-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
+          scp -i ${{ secrets.EC2_SSH_KEY }} /target/lab2-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
 
       #Despliegue EC2
       - name: SSH into EC2
