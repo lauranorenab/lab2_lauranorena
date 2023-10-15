@@ -119,24 +119,32 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
+      - name: Upload JAR
+        #This uploads artifacts from your workflow allowing you to share data between jobs and store data once a workflow is complete.
+        uses: actions/upload-artifact@v2
+        with:
+          #Set artifact name
+          name: artifact1
+          #From this path
+          path: target/lab2-0.0.1-SNAPSHOT.jar
 
       - name: Upload private key
         #This uploads artifacts from your workflow allowing you to share data between jobs and store data once a workflow is complete.
         uses: actions/upload-artifact@v2
         with:
           #Set artifact name
-          name: artifact
+          name: artifact2
           #From this path
           path: /serverCI_CD.pem
 
-      #- name: Give artifact permissions
-       # run: |
-        #  chmod 400 ${{ runner.artifactCache.artifact.path }}
+      - name: Give artifact permissions
+        run: |
+          chmod 400 ${{ runner.artifactCache.artifact2 }}
 
       #Copiar JAR a la instancia de EC2
       - name: Copy JAR to EC2
         run: |
-          scp -i ${{ runner.artifactCache.artifact.path }} /target/lab2-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
+          scp -i ${{ runner.artifactCache.artifact2 }} ${{ runner.artifactCache.artifact1 }} ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
       #Despliegue EC2
       - name: SSH into EC2
         run: |
